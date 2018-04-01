@@ -1,0 +1,7 @@
+li[role=presentation] a{
+    padding: 1em;
+}
+
+.navbar-form{
+    margin: 0;
+}

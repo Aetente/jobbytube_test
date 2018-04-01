@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {Grid, Row, Col, Button} from 'react-bootstrap'
@@ -75,21 +74,6 @@ const signInButton ={
   color: 'white'
 }
 
-const MyButton = ()=> (
-<Route render={({ history }) => (
-      <Button style={signInButton}
-        onClick={
-          ()=>{
-            this.props.onSubmitEmailPass(
-              document.getElementById('email').value,
-              document.getElementById('pass').value
-              )
-              history.push('/main'  )
-          }
-        }
-      >Sign in</Button>
-)}/>)
-
 export class Login extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -117,29 +101,23 @@ export class Login extends React.Component { // eslint-disable-line react/prefer
                 <a>Forgot your password?</a>
               </Col>
               <Col style={signInHold} xs={6} md={6}>
-                {/* <Button style={signInButton}
-                  onClick={
-                    ()=>{
-                      this.props.onSubmitEmailPass(
-                        document.getElementById('email').value,
-                        document.getElementById('pass').value
-                        )
-                    }
-                  }
-                >Sign in</Button> */}
                 <Route render={({ history }) => (
-      <Button style={signInButton}
-        onClick={
-          ()=>{
-            this.props.onSubmitEmailPass(
-              document.getElementById('email').value,
-              document.getElementById('pass').value
-              )
-              history.push('/main'  )
-          }
-        }
-      >Sign in</Button>
-)}/>
+                    <Button style={signInButton}
+                      onClick={
+                        ()=>{
+                          this.props.onSubmitEmailPass(
+                            document.getElementById('email').value,
+                            document.getElementById('pass').value
+                            )
+                            history.push({
+                              pathname:'/main',
+                              state: {username: document.getElementById('email').value}
+                              })
+                        }
+                      }
+                    >Sign in</Button>
+              )}
+              />
               </Col>
             </Row>
           </Grid>
