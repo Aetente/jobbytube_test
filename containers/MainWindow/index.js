@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Navbar,Glyphicon,Nav,NavItem,FormGroup,FormControl,Button,InputGroup } from 'react-bootstrap'
+import { Navbar,Glyphicon,Nav,NavItem,FormGroup,FormControl,Button,InputGroup,Grid,Row,Col } from 'react-bootstrap'
 import { Route } from 'react-router-dom'
 
 import injectSaga from 'utils/injectSaga';
@@ -20,6 +20,7 @@ import makeSelectMainWindow from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import styled from 'styled-components';
 
 import './style.css'
 
@@ -28,13 +29,30 @@ const noPadding = {
 }
 
 
+const FullDiv = styled.div`
+  width: 100%;
+  min-height: 100vh;
+`;
+const GridDown = styled(Grid)`
+  margin-top: 5em;
+`;
+
+const RightBorderCol = styled(Col)`
+  border-right: 1px solid black
+`
+
 
 export class MainWindow extends React.Component { // eslint-disable-line react/prefer-stateless-function
   
-  selectLogin = (eKey,e) => {
-    // console.log(eKey)
-    // console.log(e);
-    this.context.router.history.push("/");
+  constructor(){
+    super();
+    this.state = {
+      showSideMenu: false
+    }
+  }
+
+  selectFilter = (eKey,e) => {
+    this.setState({showSideMenu:!this.state.showSideMenu});
   }
   
   render() {
@@ -47,8 +65,8 @@ export class MainWindow extends React.Component { // eslint-disable-line react/p
         {/* <FormattedMessage {...messages.header} /> */}
         {/* <p>{this.props.location.state.username?this.props.location.state.username:'help'}</p> */}
         <Navbar fixedTop>
-          <Nav>
-            <NavItem>
+          <Nav onSelect={()=>{this.selectFilter()}}>
+            <NavItem eventKey={1}>
               <Button>
                 <Glyphicon glyph='glyphicon glyphicon-menu-hamburger'/>
               </Button>
@@ -56,18 +74,18 @@ export class MainWindow extends React.Component { // eslint-disable-line react/p
             
             <NavItem>
             <Navbar.Toggle/>
-              <Navbar.Collapse>
-                  <Navbar.Form>
-                    <FormGroup>
-                      <InputGroup>
-                        <FormControl  type="text" placeholder="Search" />
-                        <InputGroup.Button>
-                          <Button type="submit"><Glyphicon glyph='glyphicon glyphicon-search'/></Button>
-                        </InputGroup.Button>
-                      </InputGroup>
-                    </FormGroup>
-                  </Navbar.Form>
-              </Navbar.Collapse>
+            <Navbar.Collapse>
+                <Navbar.Form>
+                  <FormGroup>
+                    <InputGroup>
+                      <FormControl  type="text" placeholder="Search" />
+                      <InputGroup.Button>
+                        <Button type="submit"><Glyphicon glyph='glyphicon glyphicon-search'/></Button>
+                      </InputGroup.Button>
+                    </InputGroup>
+                  </FormGroup>
+                </Navbar.Form>
+            </Navbar.Collapse>
             </NavItem>
             </Nav>
             
@@ -99,6 +117,23 @@ export class MainWindow extends React.Component { // eslint-disable-line react/p
             }
           
         </Navbar>
+        <FullDiv className='container'>
+          {this.state.showSideMenu?(
+            <GridDown>
+              <Row>
+                <RightBorderCol xs={3}>filters</RightBorderCol>
+                <Col xs={9}>content</Col>
+              </Row>
+            </GridDown>
+          ):
+          (
+            <GridDown>
+              <Row>
+                <Col xs={12}>content</Col>
+              </Row>
+            </GridDown>
+          )}
+        </FullDiv>
       </div>
     );
   }
