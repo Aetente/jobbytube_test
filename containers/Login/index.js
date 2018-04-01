@@ -110,7 +110,7 @@ export class Login extends React.Component { // eslint-disable-line react/prefer
                             document.getElementById('pass').value
                             )
                             history.push({
-                              pathname:'/main',
+                              pathname:'/',
                               state: {username: document.getElementById('email').value}
                               })
                         }
